@@ -77,7 +77,6 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.08;letter-spa
 @media (prefers-reduced-motion:reduce){
   .reveal,.mask>span{opacity:1!important;transform:none!important;transition:none!important}
   html{scroll-behavior:auto}
-  .cursor,.cursor-ring{display:none!important}
   .petal{display:none!important}
 }
 
@@ -96,13 +95,6 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.08;letter-spa
 @keyframes plRing{0%{opacity:0;transform:scale(.4)}60%{opacity:.9}100%{opacity:.55;transform:scale(1)}}
 @keyframes plFade{to{opacity:1}}
 @keyframes plBar{0%{width:0}100%{width:120px}}
-
-/* ============================================================  CUSTOM CURSOR  */
-.cursor,.cursor-ring{position:fixed;top:0;left:0;border-radius:50%;pointer-events:none;z-index:350;mix-blend-mode:difference}
-.cursor{width:6px;height:6px;background:#fff;transform:translate(-50%,-50%)}
-.cursor-ring{width:38px;height:38px;border:1px solid rgba(255,255,255,.6);transform:translate(-50%,-50%);transition:width .3s var(--ease),height .3s var(--ease),opacity .3s,background .3s}
-.cursor-ring.hot{width:62px;height:62px;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.9)}
-@media (hover:none),(pointer:coarse){.cursor,.cursor-ring{display:none}}
 
 /* ============================================================  NAV  */
 .nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.85rem var(--gutter);background:rgba(248,245,239,0);transform:translateY(-105%);transition:transform .6s var(--ease),background .5s var(--ease),box-shadow .5s var(--ease);border-bottom:1px solid transparent}
@@ -253,7 +245,7 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.08;letter-spa
 .map-wrap svg{width:100%;max-width:440px;height:auto;overflow:visible}
 .map-fill{fill:var(--sage);opacity:0;transition:opacity 1.2s var(--ease) .8s}
 .map-wrap.drawn .map-fill{opacity:.12}
-.map-outline{fill:none;stroke:var(--sage-deep);stroke-width:1.4;opacity:.85;stroke-dasharray:1400;stroke-dashoffset:1400;transition:stroke-dashoffset 2.4s var(--ease)}
+.map-outline{fill:none;stroke:var(--sage-deep);stroke-width:1.4;opacity:.85;stroke-dasharray:1000;stroke-dashoffset:1000;transition:stroke-dashoffset 2.6s var(--ease)}
 .map-wrap.drawn .map-outline{stroke-dashoffset:0}
 .pin{opacity:0;transform:translateY(-12px);transition:opacity .6s var(--ease) 2s,transform .6s var(--ease) 2s}
 .map-wrap.drawn .pin{opacity:1;transform:none}
@@ -332,10 +324,6 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.08;letter-spa
     <div class="pl-bar"></div>
   </div>
 </div>
-
-<!-- CUSTOM CURSOR -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
 
 <!-- NAV -->
 <nav class="nav" id="nav">
@@ -491,13 +479,13 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.08;letter-spa
       </div>
     </div>
     <div class="map-wrap reveal" data-d="1" id="mapWrap">
-      <svg viewBox="0 0 400 340" role="img" aria-label="Mapa Polski z zaznaczonym Kaliszem">
-        <path class="map-fill" d="M70 90 L120 60 L150 70 L185 55 L210 70 L255 60 L300 80 L335 90 L355 120 L350 160 L370 195 L350 230 L320 245 L300 275 L260 290 L215 280 L180 295 L140 280 L110 255 L75 245 L55 210 L70 175 L50 145 L70 115 Z"/>
-        <path class="map-outline" d="M70 90 L120 60 L150 70 L185 55 L210 70 L255 60 L300 80 L335 90 L355 120 L350 160 L370 195 L350 230 L320 245 L300 275 L260 290 L215 280 L180 295 L140 280 L110 255 L75 245 L55 210 L70 175 L50 145 L70 115 Z"/>
+      <svg viewBox="0 0 400 360" role="img" aria-label="Mapa Polski z zaznaczonym Kaliszem">
+        <path class="map-fill" d="M30,73 L55,66 L98,54 L144,28 L175,47 L207,46 L225,45 L331,49 L338,50 L355,69 L370,123 L359,161 L362,177 L377,240 L324,307 L334,335 L267,321 L232,330 L200,318 L182,302 L161,291 L122,275 L105,275 L66,231 L54,212 L41,177 L25,131 L34,107 Z"/>
+        <path class="map-outline" pathLength="1000" d="M30,73 L55,66 L98,54 L144,28 L175,47 L207,46 L225,45 L331,49 L338,50 L355,69 L370,123 L359,161 L362,177 L377,240 L324,307 L334,335 L267,321 L232,330 L200,318 L182,302 L161,291 L122,275 L105,275 L66,231 L54,212 L41,177 L25,131 L34,107 Z"/>
         <g class="pin">
-          <circle class="pin-ring" cx="165" cy="180" r="6"/>
-          <circle class="pin-dot" cx="165" cy="180" r="5"/>
-          <text class="map-label" x="178" y="184">Kalisz</text>
+          <circle class="pin-ring" cx="164" cy="190" r="6"/>
+          <circle class="pin-dot" cx="164" cy="190" r="4.5"/>
+          <text class="map-label" x="176" y="194">Kalisz</text>
         </g>
       </svg>
     </div>
@@ -761,22 +749,10 @@ window.addEventListener('scroll',()=>{
   progress.style.width=(window.scrollY/h*100)+'%';
 },{passive:true});
 
-/* ---------- CUSTOM CURSOR + magnetic ---------- */
+/* ---------- MAGNETIC CTA ---------- */
+window.bindCursor=function(){};
 (function(){
   if(reduce||window.matchMedia('(hover:none)').matches)return;
-  const dot=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
-  let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;
-  window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
-  (function loop(){rx+=(mx-rx)*0.18;ry+=(my-ry)*0.18;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
-  window.bindCursor=function(){
-    document.querySelectorAll('[data-cursor]').forEach(el=>{
-      if(el._cb)return;el._cb=true;
-      el.addEventListener('mouseenter',()=>ring.classList.add('hot'));
-      el.addEventListener('mouseleave',()=>ring.classList.remove('hot'));
-    });
-  };
-  window.bindCursor();
-  // magnetic CTA
   document.querySelectorAll('.btn').forEach(btn=>{
     btn.addEventListener('mousemove',e=>{
       const r=btn.getBoundingClientRect();
@@ -785,7 +761,6 @@ window.addEventListener('scroll',()=>{
     btn.addEventListener('mouseleave',()=>btn.style.transform='');
   });
 })();
-if(!window.bindCursor)window.bindCursor=function(){};
 
 /* ---------- FORM ---------- */
 const form=document.getElementById('contactForm');
