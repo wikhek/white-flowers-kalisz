@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>White Flowers Kalisz — Pracownia Dekoracji Florystycznych</title>
+<meta name="description" content="White Flowers Kalisz — pracownia dekoracji florystycznych. Śluby, eventy, wianki. Kwintesencja luksusu i ponadczasowej elegancji. Piękno w prostocie. Perfekcja w detalu." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================  TOKENS  */
+:root{
+  --ivory:#F8F5EF; --ivory-deep:#F1ECE2;
+  --charcoal:#1A1A1A; --charcoal-soft:#2A2A28; --muted:#6C685F;
+  --sage:#A8B5A0; --sage-deep:#8B9A82;
+  --gold:#B79A63; --gold-soft:#C9B187;
+  --line:#E3DCCF; --white:#FFFFFF;
+  --serif:'Cormorant Garamond','Times New Roman',serif;
+  --sans:'Jost',system-ui,sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --shadow-soft:0 24px 60px -28px rgba(26,26,26,.28);
+  --shadow-card:0 18px 48px -30px rgba(26,26,26,.35);
+  --maxw:1240px; --gutter:clamp(1.5rem,5vw,5.5rem);
+}
+
+/* ============================================================  RESET  */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);background:var(--ivory);color:var(--charcoal);
+  font-weight:300;line-height:1.75;letter-spacing:.01em;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+body.loading{overflow:hidden;height:100vh}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+ul{list-style:none}
+::selection{background:var(--sage);color:var(--white)}
+
+h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.08;letter-spacing:.005em}
+.eyebrow{font-family:var(--sans);font-size:.72rem;letter-spacing:.42em;text-transform:uppercase;font-weight:400;color:var(--gold);display:inline-flex;align-items:center;gap:1rem}
+.eyebrow::before{content:"";width:34px;height:1px;background:var(--gold);opacity:.7}
+.eyebrow.center::after{content:"";width:34px;height:1px;background:var(--gold);opacity:.7}
+.section-title{font-size:clamp(2.4rem,5.2vw,4.2rem);font-weight:300}
+.lede{font-size:clamp(1.05rem,1.6vw,1.2rem);color:var(--muted);font-weight:300;max-width:46ch}
+
+.section{padding:clamp(5rem,11vw,9.5rem) var(--gutter)}
+.wrap{max-width:var(--maxw);margin-inline:auto;width:100%}
+.section-head{margin-bottom:clamp(2.5rem,6vw,4.5rem)}
+.section-head.center{text-align:center;display:flex;flex-direction:column;align-items:center;gap:1.4rem}
+.section-head .section-title{margin-top:1.4rem}
+
+/* ============================================================  MONOGRAM  */
+.mono{position:relative;display:inline-block;width:1em;height:1em;font-family:var(--serif);font-weight:500;line-height:1;color:currentColor}
+.mono i{font-style:normal;position:absolute;font-size:.66em;line-height:1}
+.mono .w{left:0;top:.02em}
+.mono .f{right:.04em;bottom:.02em}
+.mono .sl{position:absolute;left:50%;top:50%;width:1px;height:1.12em;background:currentColor;transform:translate(-50%,-50%) rotate(26deg);opacity:.85}
+
+/* ============================================================  REVEAL  */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 1.05s var(--ease-out),transform 1.05s var(--ease-out)}
+.reveal.in{opacity:1;transform:none}
+.reveal[data-d="1"]{transition-delay:.1s}
+.reveal[data-d="2"]{transition-delay:.2s}
+.reveal[data-d="3"]{transition-delay:.3s}
+.reveal[data-d="4"]{transition-delay:.4s}
+/* masked line reveal for headings */
+.mask{display:inline-block;overflow:hidden;vertical-align:bottom}
+.mask>span{display:inline-block;transform:translateY(110%);transition:transform 1.1s var(--ease-out)}
+.in .mask>span,.mask.in>span{transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  .reveal,.mask>span{opacity:1!important;transform:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+  .cursor,.cursor-ring{display:none!important}
+  .petal{display:none!important}
+}
+
+/* ============================================================  SCROLL PROGRESS  */
+.progress{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--gold-soft),var(--gold));z-index:300;transition:width .1s linear}
+
+/* ============================================================  PRELOADER  */
+.preloader{position:fixed;inset:0;z-index:400;background:var(--ivory);display:grid;place-items:center;transition:opacity .8s var(--ease),visibility .8s}
+.preloader.done{opacity:0;visibility:hidden}
+.pl-inner{text-align:center;display:flex;flex-direction:column;align-items:center;gap:1.3rem}
+.pl-mono{font-size:74px;color:var(--charcoal);opacity:0;transform:scale(.9);animation:plMono 1.1s var(--ease-out) .1s forwards}
+.pl-ring{position:absolute;width:150px;height:150px;border:1px solid var(--gold);border-radius:50%;opacity:0;animation:plRing 1.3s var(--ease-out) .25s forwards}
+.pl-name{font-family:var(--serif);font-size:1.1rem;letter-spacing:.5em;text-transform:uppercase;color:var(--muted);opacity:0;animation:plFade 1s var(--ease) .55s forwards}
+.pl-bar{width:0;height:1px;background:var(--gold);margin-top:.4rem;animation:plBar 1.3s var(--ease) .5s forwards}
+@keyframes plMono{to{opacity:1;transform:none}}
+@keyframes plRing{0%{opacity:0;transform:scale(.4)}60%{opacity:.9}100%{opacity:.55;transform:scale(1)}}
+@keyframes plFade{to{opacity:1}}
+@keyframes plBar{0%{width:0}100%{width:120px}}
+
+/* ============================================================  CUSTOM CURSOR  */
+.cursor,.cursor-ring{position:fixed;top:0;left:0;border-radius:50%;pointer-events:none;z-index:350;mix-blend-mode:difference}
+.cursor{width:6px;height:6px;background:#fff;transform:translate(-50%,-50%)}
+.cursor-ring{width:38px;height:38px;border:1px solid rgba(255,255,255,.6);transform:translate(-50%,-50%);transition:width .3s var(--ease),height .3s var(--ease),opacity .3s,background .3s}
+.cursor-ring.hot{width:62px;height:62px;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.9)}
+@media (hover:none),(pointer:coarse){.cursor,.cursor-ring{display:none}}
+
+/* ============================================================  NAV  */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.85rem var(--gutter);background:rgba(248,245,239,0);transform:translateY(-105%);transition:transform .6s var(--ease),background .5s var(--ease),box-shadow .5s var(--ease);border-bottom:1px solid transparent}
+.nav.show{transform:none;background:rgba(248,245,239,.82);backdrop-filter:blur(14px) saturate(120%);box-shadow:0 1px 0 rgba(227,220,207,.9);border-bottom:1px solid var(--line)}
+.nav-brand{display:flex;align-items:center;gap:.75rem}
+.nav-mono{font-size:30px;width:44px;height:44px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--charcoal)}
+.nav-name{font-family:var(--serif);font-size:1.2rem;letter-spacing:.16em;text-transform:uppercase;font-weight:400}
+.nav-links{display:flex;gap:2.1rem;align-items:center}
+.nav-links a{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--charcoal-soft);position:relative;padding:.3rem 0;transition:color .3s var(--ease)}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:1px;background:var(--gold);transition:width .35s var(--ease)}
+.nav-links a:hover{color:var(--gold)}
+.nav-links a:hover::after{width:100%}
+.nav-toggle{display:none;flex-direction:column;gap:5px;padding:.4rem}
+.nav-toggle span{width:24px;height:1.5px;background:var(--charcoal);transition:.3s var(--ease)}
+@media (max-width:880px){
+  .nav-links{position:fixed;inset:0 0 0 auto;width:min(80vw,360px);background:var(--ivory);flex-direction:column;justify-content:center;gap:2rem;padding:3rem;transform:translateX(100%);transition:transform .55s var(--ease);box-shadow:var(--shadow-soft)}
+  .nav-links.open{transform:none}
+  .nav-links a{font-size:1.05rem}
+  .nav-toggle{display:flex;z-index:101}
+  .nav-toggle.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+  .nav-toggle.open span:nth-child(2){opacity:0}
+  .nav-toggle.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+}
+
+/* ============================================================  HERO  */
+.hero{position:relative;min-height:100svh;display:grid;place-items:center;text-align:center;padding:7rem var(--gutter) 5rem;overflow:hidden;color:var(--white)}
+.hero-bg{position:absolute;inset:-8% 0;z-index:-2;background:url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=2000&q=80') center 30%/cover no-repeat;will-change:transform;animation:heroDrift 24s var(--ease) infinite alternate}
+@keyframes heroDrift{from{transform:scale(1.1)}to{transform:scale(1.2)}}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(120% 90% at 50% 35%,rgba(26,26,26,.12),rgba(26,26,26,.55) 70%,rgba(26,26,26,.72)),linear-gradient(to top,rgba(26,26,26,.6),transparent 45%)}
+.hero-grain{position:absolute;inset:0;z-index:-1;opacity:.06;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.petals{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.petal{position:absolute;top:-8%;color:rgba(255,255,255,.55);opacity:0;animation:fall linear infinite}
+.petal svg{width:100%;height:100%;display:block}
+@keyframes fall{0%{opacity:0;transform:translateY(-10vh) translateX(0) rotate(0)}10%{opacity:.7}90%{opacity:.5}100%{opacity:0;transform:translateY(112vh) translateX(60px) rotate(320deg)}}
+.hero-inner{max-width:900px;display:flex;flex-direction:column;align-items:center;gap:1.9rem;will-change:transform}
+.hero-mono{font-size:60px;width:104px;height:104px;border:1px solid rgba(255,255,255,.5);border-radius:50%;display:grid;place-items:center;opacity:0;animation:fadeUp 1.3s var(--ease-out) .2s both}
+.hero-name{font-size:clamp(3rem,9vw,6.4rem);font-weight:300;letter-spacing:.02em;line-height:1;opacity:0;animation:fadeUp 1.3s var(--ease-out) .35s both}
+.hero-sub{font-family:var(--sans);font-size:clamp(.72rem,2.2vw,.85rem);letter-spacing:.45em;text-transform:uppercase;font-weight:300;color:rgba(255,255,255,.85);opacity:0;animation:fadeUp 1.3s var(--ease-out) .5s both}
+.hero-rule{width:1px;height:54px;background:linear-gradient(to bottom,transparent,rgba(255,255,255,.7),transparent);opacity:0;animation:fadeUp 1.3s var(--ease-out) .6s both}
+.hero-tag{font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(1.3rem,3.6vw,2rem);line-height:1.5;max-width:26ch}
+.hero-tag .w{display:inline-block;opacity:0;transform:translateY(18px);animation:fadeUp .9s var(--ease-out) both}
+.btn{display:inline-flex;align-items:center;gap:.85rem;font-family:var(--sans);font-size:.76rem;letter-spacing:.26em;text-transform:uppercase;font-weight:400;padding:1.15rem 2.4rem;border:1px solid currentColor;color:var(--white);position:relative;overflow:hidden;transition:color .5s var(--ease)}
+.btn::before{content:"";position:absolute;inset:0;background:var(--white);transform:translateY(101%);transition:transform .5s var(--ease);z-index:-1}
+.btn:hover{color:var(--charcoal)}
+.btn:hover::before{transform:translateY(0)}
+.btn .arrow{transition:transform .4s var(--ease)}
+.btn:hover .arrow{transform:translateX(5px)}
+.btn-dark{color:var(--charcoal)}
+.btn-dark::before{background:var(--charcoal)}
+.btn-dark:hover{color:var(--ivory)}
+.hero-cta{opacity:0;animation:fadeUp 1.3s var(--ease-out) 1.5s both}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.7rem;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.7);opacity:0;animation:fadeUp 1.3s var(--ease) 1.8s both}
+.scroll-hint .dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.8);animation:scrollDot 2s var(--ease) infinite}
+@keyframes scrollDot{0%{transform:translateY(0);opacity:0}40%{opacity:1}100%{transform:translateY(16px);opacity:0}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(34px)}to{opacity:1;transform:none}}
+
+/* ============================================================  MARQUEE  */
+.marquee{background:var(--charcoal);color:var(--ivory);padding:1.5rem 0;overflow:hidden;white-space:nowrap;border-block:1px solid rgba(255,255,255,.06)}
+.marquee-track{display:inline-flex;align-items:center;gap:2.5rem;animation:scrollX 32s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee span{font-family:var(--serif);font-style:italic;font-size:clamp(1.5rem,3vw,2.3rem);font-weight:300;color:var(--ivory)}
+.marquee .sep{color:var(--gold-soft);font-style:normal;font-size:1rem}
+@keyframes scrollX{to{transform:translateX(-50%)}}
+
+/* ============================================================  O NAS  */
+.about{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(2.5rem,6vw,6rem);align-items:center}
+@media(max-width:820px){.about{grid-template-columns:1fr}}
+.about-photo{position:relative;overflow:hidden}
+.about-photo img{width:100%;aspect-ratio:3/4;object-fit:cover;box-shadow:var(--shadow-soft);will-change:transform}
+.about-photo::after{content:"";position:absolute;inset:14px -14px -14px 14px;border:1px solid var(--gold);z-index:-1}
+.about-photo .badge{position:absolute;left:-26px;bottom:34px;background:var(--ivory);padding:1.5rem 1.7rem;box-shadow:var(--shadow-card);text-align:center}
+.about-photo .badge .n{font-family:var(--serif);font-size:2.6rem;line-height:1;color:var(--gold)}
+.about-photo .badge .l{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-top:.4rem}
+.about-copy p{margin-top:1.5rem;color:var(--charcoal-soft);font-size:1.05rem}
+.about-copy .pull{font-family:var(--serif);font-style:italic;font-size:clamp(1.5rem,3vw,2rem);line-height:1.4;color:var(--charcoal);margin-top:2.2rem;font-weight:300}
+.about-sign{margin-top:2rem;font-family:var(--serif);font-size:1.5rem;color:var(--sage-deep)}
+
+/* ============================================================  GALLERY  */
+.gallery-section{background:var(--ivory-deep)}
+.tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin-bottom:clamp(2.5rem,5vw,3.5rem)}
+.tab{font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding:.7rem 1.4rem;border:1px solid transparent;transition:.4s var(--ease)}
+.tab:hover{color:var(--charcoal)}
+.tab.active{color:var(--charcoal);border-color:var(--gold)}
+.masonry{columns:3;column-gap:1.1rem}
+@media(max-width:900px){.masonry{columns:2}}
+@media(max-width:560px){.masonry{columns:1}}
+.tile{position:relative;margin-bottom:1.1rem;overflow:hidden;break-inside:avoid;cursor:pointer;background:var(--ivory);box-shadow:var(--shadow-card);opacity:0;transform:translateY(24px) scale(.98);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out)}
+.tile.shown{opacity:1;transform:none}
+.tile img{width:100%;transition:transform 1.1s var(--ease)}
+.tile::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(26,26,26,.62),transparent 55%);opacity:0;transition:opacity .5s var(--ease)}
+.tile .cap{position:absolute;left:1.2rem;bottom:1.1rem;z-index:2;color:var(--white);opacity:0;transform:translateY(12px);transition:.55s var(--ease)}
+.tile .cap .t{font-family:var(--serif);font-size:1.3rem;line-height:1.1}
+.tile .cap .s{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.8);margin-top:.25rem}
+.tile:hover img{transform:scale(1.07)}
+.tile:hover::after{opacity:1}
+.tile:hover .cap{opacity:1;transform:none}
+
+/* ============================================================  OFERTA  */
+.offer-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(1rem,2.5vw,1.6rem)}
+@media(max-width:760px){.offer-grid{grid-template-columns:1fr}}
+.offer-card{background:var(--white);padding:clamp(2rem,4vw,3rem);position:relative;border:1px solid var(--line);transition:.6s var(--ease);overflow:hidden}
+.offer-card::before{content:"";position:absolute;left:0;top:0;width:100%;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease)}
+.offer-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-soft);border-color:transparent}
+.offer-card:hover::before{transform:scaleX(1)}
+.offer-icon{width:46px;height:46px;color:var(--sage-deep);margin-bottom:1.6rem}
+.offer-card:hover .offer-icon{color:var(--gold)}
+.offer-icon svg{width:100%;height:100%;transition:color .5s var(--ease)}
+.offer-num{position:absolute;right:1.6rem;top:1.2rem;font-family:var(--serif);font-size:3.4rem;color:var(--line);line-height:1;transition:color .5s var(--ease)}
+.offer-card:hover .offer-num{color:var(--gold-soft)}
+.offer-card h3{font-size:1.7rem;margin-bottom:.7rem}
+.offer-card p{color:var(--muted);font-size:.98rem;max-width:34ch}
+
+/* ============================================================  OPINIE  */
+.reviews-section{background:var(--charcoal);color:var(--ivory);position:relative;overflow:hidden}
+.reviews-section .eyebrow{color:var(--gold-soft)}
+.reviews-section .eyebrow::before,.reviews-section .eyebrow.center::after{background:var(--gold-soft)}
+.reviews-section .quote-bg{position:absolute;top:-4%;left:50%;transform:translateX(-50%);font-family:var(--serif);font-size:34rem;line-height:1;color:rgba(255,255,255,.025);pointer-events:none;user-select:none}
+.stat{text-align:center;margin-bottom:clamp(3rem,6vw,4.5rem);position:relative}
+.stat .big{font-family:var(--serif);font-weight:300;font-size:clamp(2.6rem,7vw,5rem);line-height:1.1}
+.stat .big b{color:var(--gold-soft);font-weight:400}
+.stat .stars{color:var(--gold-soft);letter-spacing:.35em;font-size:1.1rem;margin-top:1rem}
+.carousel{position:relative;max-width:880px;margin-inline:auto}
+.track{overflow:hidden}
+.slides{display:flex}
+.slide{min-width:100%;padding:0 clamp(.5rem,3vw,2.5rem);text-align:center;opacity:.25;transition:opacity .7s var(--ease)}
+.slide.active{opacity:1}
+.slide .qm{font-family:var(--serif);font-size:5rem;line-height:.6;color:var(--gold-soft);opacity:.5;display:block;margin-bottom:1rem}
+.slide blockquote{font-family:var(--serif);font-weight:300;font-style:italic;font-size:clamp(1.3rem,2.7vw,1.9rem);line-height:1.55;color:var(--ivory)}
+.slide .author{margin-top:2rem;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-soft)}
+.slide .author span{display:block;color:rgba(248,245,239,.55);letter-spacing:.12em;margin-top:.4rem;font-size:.72rem}
+.carousel-nav{display:flex;align-items:center;justify-content:center;gap:1.8rem;margin-top:2.5rem}
+.carousel-nav button{width:48px;height:48px;border:1px solid rgba(248,245,239,.3);border-radius:50%;display:grid;place-items:center;color:var(--ivory);transition:.4s var(--ease)}
+.carousel-nav button:hover{border-color:var(--gold-soft);color:var(--gold-soft);background:rgba(183,154,99,.08)}
+.dots{display:flex;gap:.6rem}
+.dots button{width:7px;height:7px;border-radius:50%;background:rgba(248,245,239,.25);transition:.4s var(--ease)}
+.dots button.active{background:var(--gold-soft);width:22px;border-radius:4px}
+
+/* ============================================================  ZASIEG / MAP  */
+.reach{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2.5rem,6vw,5rem);align-items:center}
+@media(max-width:820px){.reach{grid-template-columns:1fr;text-align:center;justify-items:center}}
+.reach-copy .section-title{margin:1.4rem 0}
+.reach-copy p{color:var(--muted);max-width:38ch}
+.reach-stats{display:flex;gap:2.5rem;margin-top:2.5rem}
+@media(max-width:820px){.reach-stats{justify-content:center}}
+.reach-stats .n{font-family:var(--serif);font-size:2.4rem;color:var(--gold);line-height:1}
+.reach-stats .l{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:.4rem}
+.map-wrap{position:relative;display:flex;justify-content:center}
+.map-wrap svg{width:100%;max-width:440px;height:auto;overflow:visible}
+.map-fill{fill:var(--sage);opacity:0;transition:opacity 1.2s var(--ease) .8s}
+.map-wrap.drawn .map-fill{opacity:.12}
+.map-outline{fill:none;stroke:var(--sage-deep);stroke-width:1.4;opacity:.85;stroke-dasharray:1400;stroke-dashoffset:1400;transition:stroke-dashoffset 2.4s var(--ease)}
+.map-wrap.drawn .map-outline{stroke-dashoffset:0}
+.pin{opacity:0;transform:translateY(-12px);transition:opacity .6s var(--ease) 2s,transform .6s var(--ease) 2s}
+.map-wrap.drawn .pin{opacity:1;transform:none}
+.pin-dot{fill:var(--gold)}
+.pin-ring{fill:none;stroke:var(--gold);stroke-width:1.4;transform-origin:center;transform-box:fill-box;animation:pulse 2.6s var(--ease) infinite}
+@keyframes pulse{0%{transform:scale(.6);opacity:.9}70%{transform:scale(2.6);opacity:0}100%{opacity:0}}
+.map-label{font-family:var(--sans);font-size:11px;letter-spacing:.18em;text-transform:uppercase;fill:var(--charcoal);font-weight:500}
+
+/* ============================================================  KONTAKT  */
+.contact-section{background:var(--ivory-deep)}
+.contact{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2.5rem,6vw,5rem)}
+@media(max-width:860px){.contact{grid-template-columns:1fr}}
+.contact-info .section-title{margin:1.2rem 0 2rem}
+.info-row{display:flex;gap:1.2rem;padding:1.4rem 0;border-top:1px solid var(--line)}
+.info-row:last-of-type{border-bottom:1px solid var(--line)}
+.info-row .ico{color:var(--gold);flex-shrink:0;margin-top:.2rem}
+.info-row .ico svg{width:20px;height:20px}
+.info-row .k{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.info-row .v{font-family:var(--serif);font-size:1.5rem;color:var(--charcoal);margin-top:.15rem;transition:color .3s var(--ease)}
+.info-row a.v:hover{color:var(--gold)}
+.socials{display:flex;gap:1rem;margin-top:2.2rem}
+.socials a{width:46px;height:46px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;color:var(--charcoal-soft);transition:.4s var(--ease)}
+.socials a:hover{background:var(--charcoal);color:var(--ivory);border-color:var(--charcoal);transform:translateY(-3px)}
+.socials svg{width:18px;height:18px}
+.form{background:var(--white);padding:clamp(2rem,4vw,3.2rem);box-shadow:var(--shadow-soft)}
+.form .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+@media(max-width:520px){.form .grid2{grid-template-columns:1fr}}
+.field{position:relative;margin-bottom:1.6rem}
+.field label{display:block;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem}
+.field input,.field textarea{width:100%;background:transparent;border:none;border-bottom:1px solid var(--line);padding:.6rem 0;font-family:var(--sans);font-size:1rem;color:var(--charcoal);font-weight:300;transition:border-color .4s var(--ease)}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--gold)}
+.field textarea{resize:vertical;min-height:90px}
+.form .btn{width:100%;justify-content:center;margin-top:.4rem}
+.form-note{font-size:.82rem;color:var(--muted);text-align:center;margin-top:1.2rem}
+.form-success{display:none;text-align:center;padding:1rem 0;color:var(--sage-deep);font-family:var(--serif);font-style:italic;font-size:1.3rem}
+.form-success.show{display:block;animation:fadeUp .7s var(--ease-out)}
+
+/* ============================================================  FOOTER  */
+.footer{background:var(--charcoal);color:rgba(248,245,239,.7);padding:clamp(3.5rem,7vw,5rem) var(--gutter) 2.5rem;text-align:center}
+.footer-mono{font-size:42px;width:70px;height:70px;border:1px solid rgba(248,245,239,.3);border-radius:50%;display:grid;place-items:center;margin:0 auto 1.4rem;color:var(--ivory)}
+.footer-name{font-family:var(--serif);font-size:1.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ivory)}
+.footer-sub{font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;margin-top:.6rem;color:rgba(248,245,239,.5)}
+.footer-socials{display:flex;justify-content:center;gap:1.4rem;margin:2rem 0}
+.footer-socials a{color:rgba(248,245,239,.6);transition:color .3s var(--ease),transform .3s var(--ease)}
+.footer-socials a:hover{color:var(--gold-soft);transform:translateY(-3px)}
+.footer-socials svg{width:20px;height:20px}
+.footer-divider{width:60px;height:1px;background:rgba(248,245,239,.2);margin:2rem auto}
+.footer-meta{font-size:.78rem;letter-spacing:.05em;line-height:2}
+.footer-meta .heart{color:var(--gold-soft)}
+
+/* ============================================================  LIGHTBOX  */
+.lightbox{position:fixed;inset:0;z-index:200;background:rgba(20,19,17,.95);display:flex;align-items:center;justify-content:center;padding:2rem;opacity:0;visibility:hidden;transition:opacity .45s var(--ease),visibility .45s}
+.lightbox.open{opacity:1;visibility:visible}
+.lightbox img{max-width:88vw;max-height:82vh;box-shadow:0 30px 80px rgba(0,0,0,.5);transform:scale(.94);transition:transform .5s var(--ease)}
+.lightbox.open img{transform:scale(1)}
+.lb-close,.lb-prev,.lb-next{position:absolute;color:var(--ivory);width:54px;height:54px;border:1px solid rgba(248,245,239,.3);border-radius:50%;display:grid;place-items:center;transition:.4s var(--ease);background:rgba(0,0,0,.2)}
+.lb-close{top:1.6rem;right:1.6rem}
+.lb-prev{left:2rem;top:50%;transform:translateY(-50%)}
+.lb-next{right:2rem;top:50%;transform:translateY(-50%)}
+.lb-close:hover,.lb-prev:hover,.lb-next:hover{border-color:var(--gold-soft);color:var(--gold-soft)}
+.lb-counter{position:absolute;bottom:1.8rem;left:50%;transform:translateX(-50%);font-size:.74rem;letter-spacing:.24em;color:rgba(248,245,239,.7)}
+@media(max-width:600px){.lb-prev{left:.6rem}.lb-next{right:.6rem}.lb-close{top:1rem;right:1rem}}
+</style>
+</head>
+<body class="loading">
+
+<!-- PROGRESS -->
+<div class="progress" id="progress"></div>
+
+<!-- PRELOADER -->
+<div class="preloader" id="preloader">
+  <div class="pl-inner">
+    <div class="pl-ring"></div>
+    <div class="pl-mono mono"><i class="w">W</i><span class="sl"></span><i class="f">F</i></div>
+    <div class="pl-name">White Flowers</div>
+    <div class="pl-bar"></div>
+  </div>
+</div>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="#hero" class="nav-brand" data-cursor>
+    <span class="nav-mono mono"><i class="w">W</i><span class="sl"></span><i class="f">F</i></span>
+    <span class="nav-name">White Flowers</span>
+  </a>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">O nas</a></li>
+    <li><a href="#realizacje">Realizacje</a></li>
+    <li><a href="#oferta">Oferta</a></li>
+    <li><a href="#opinie">Opinie</a></li>
+    <li><a href="#zasieg">Zasięg</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-grain"></div>
+  <div class="petals" id="petals"></div>
+  <div class="hero-inner" id="heroInner">
+    <div class="hero-mono mono"><i class="w">W</i><span class="sl"></span><i class="f">F</i></div>
+    <h1 class="hero-name">White Flowers</h1>
+    <p class="hero-sub">Pracownia Dekoracji Florystycznych · Kalisz</p>
+    <div class="hero-rule"></div>
+    <p class="hero-tag" id="heroTag">Projekty dla wymagających. Piękno w prostocie. Perfekcja w detalu.</p>
+    <a href="#kontakt" class="btn hero-cta" data-cursor>Porozmawiajmy o Twoim projekcie <span class="arrow">→</span></a>
+  </div>
+  <div class="scroll-hint"><span>Przewiń</span><span class="dot"></span></div>
+</header>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track" id="marquee">
+    <span>Śluby</span><span class="sep">✦</span><span>Dekoracja sali</span><span class="sep">✦</span><span>Bukiety ślubne</span><span class="sep">✦</span><span>Eventy</span><span class="sep">✦</span><span>Dekoracja kościoła</span><span class="sep">✦</span><span>Wianki</span><span class="sep">✦</span><span>Sezonowe</span><span class="sep">✦</span>
+  </div>
+</div>
+
+<!-- O NAS -->
+<section class="section" id="about">
+  <div class="wrap about">
+    <div class="about-photo reveal">
+      <img src="https://images.unsplash.com/photo-1457089328109-e5d9bd499191?auto=format&fit=crop&w=900&q=80" alt="Florystka komponująca bukiet" loading="lazy" data-parallax="0.12">
+      <div class="badge">
+        <div class="n" data-count="10" data-suffix="+">0</div>
+        <div class="l">lat pasji</div>
+      </div>
+    </div>
+    <div class="about-copy reveal" data-d="1">
+      <span class="eyebrow">O nas</span>
+      <p class="pull">Tworzymy oprawy florystyczne, w których głęboka czerń spotyka śnieżną biel — atmosfera wyrafinowania i klasy.</p>
+      <p>White Flowers to kaliska pracownia dekoracji florystycznych, w której każdy projekt powstaje z uwagą do najmniejszego detalu. Wierzymy, że prawdziwa elegancja nie krzyczy — szepcze. Dlatego stawiamy na naturalne formy, stonowane palety i kompozycje, które pozwalają oddychać przestrzeni.</p>
+      <p>Specjalizujemy się w dekoracjach ślubnych i eventowych — dla par oraz klientów, którzy cenią ponadczasową elegancję i indywidualne podejście. Słuchamy, doradzamy i projektujemy oprawę skrojoną pod charakter Waszej uroczystości — od pierwszej rozmowy aż po ostatnią postawioną świecę.</p>
+      <p class="about-sign">— White Flowers</p>
+    </div>
+  </div>
+</section>
+
+<!-- REALIZACJE -->
+<section class="section gallery-section" id="realizacje">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="eyebrow center">Portfolio</span>
+      <h2 class="section-title">Realizacje</h2>
+      <p class="lede">Wybrane projekty z naszej pracowni — śluby, eventy i sezonowe kompozycje tworzone z myślą o niepowtarzalnych chwilach.</p>
+    </div>
+    <div class="tabs reveal" data-d="1" id="tabs">
+      <button class="tab active" data-cat="sluby" data-cursor>Śluby</button>
+      <button class="tab" data-cat="eventy" data-cursor>Eventy</button>
+      <button class="tab" data-cat="wianki" data-cursor>Wianki</button>
+      <button class="tab" data-cat="sezonowe" data-cursor>Sezonowe</button>
+    </div>
+    <div class="masonry" id="gallery"></div>
+  </div>
+</section>
+
+<!-- OFERTA -->
+<section class="section" id="oferta">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="eyebrow center">Co robimy</span>
+      <h2 class="section-title">Oferta</h2>
+      <p class="lede">Kompleksowa oprawa florystyczna — od ceremonii po wieczorne przyjęcie.</p>
+    </div>
+    <div class="offer-grid">
+      <article class="offer-card reveal" data-cursor>
+        <div class="offer-num">01</div>
+        <div class="offer-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M6 42V20l18-12 18 12v22"/><path d="M16 42V28h16v14"/><path d="M24 8v6M18 14h12"/></svg></div>
+        <h3>Dekoracja sali weselnej</h3>
+        <p>Kompozycje na stoły, ściany kwiatowe i instalacje, które nadają sali spójny, dopracowany charakter.</p>
+      </article>
+      <article class="offer-card reveal" data-d="1" data-cursor>
+        <div class="offer-num">02</div>
+        <div class="offer-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M24 6v36M12 18h24M10 42h28"/><path d="M16 18c0-6 8-9 8-12 0 3 8 6 8 12"/></svg></div>
+        <h3>Dekoracja kościoła</h3>
+        <p>Subtelna oprawa ceremonii — ławki, ołtarz i wejście utrzymane w eleganckiej, naturalnej stylistyce.</p>
+      </article>
+      <article class="offer-card reveal" data-d="2" data-cursor>
+        <div class="offer-num">03</div>
+        <div class="offer-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="24" cy="16" r="7"/><path d="M24 23v13M24 36c-4 0-7 3-7 6h14c0-3-3-6-7-6zM17 14l-7-3M31 14l7-3"/></svg></div>
+        <h3>Bukiety ślubne</h3>
+        <p>Autorskie bukiety Panny Młodej i kompozycje dla gości — komponowane indywidualnie pod Waszą wizję.</p>
+      </article>
+      <article class="offer-card reveal" data-d="3" data-cursor>
+        <div class="offer-num">04</div>
+        <div class="offer-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="24" cy="24" r="14"/><circle cx="24" cy="24" r="6"/><path d="M24 10v-4M24 42v-4M10 24h-4M42 24h-4"/></svg></div>
+        <h3>Eventy &amp; wianki</h3>
+        <p>Oprawa eventów firmowych, sesji i przyjęć oraz ręcznie wykonane wianki na każdą okazję.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- OPINIE -->
+<section class="section reviews-section" id="opinie">
+  <span class="quote-bg" aria-hidden="true">”</span>
+  <div class="wrap">
+    <div class="section-head center reveal"><span class="eyebrow center">Opinie</span></div>
+    <div class="stat reveal" data-d="1">
+      <div class="big"><b data-count="96" data-suffix="%">0</b> par poleca · <b data-count="46">0</b> opinii</div>
+      <div class="stars">★ ★ ★ ★ ★</div>
+    </div>
+    <div class="carousel reveal" data-d="2">
+      <div class="track"><div class="slides" id="slides">
+        <div class="slide active"><span class="qm">“</span><blockquote>White Flowers zamieniło naszą salę w coś z marzeń. Dbałość o każdy detal, stonowane kolory i kwiaty, które wyglądały świeżo do późnej nocy. Polecamy całym sercem!</blockquote><div class="author">Aleksandra &amp; Marcin<span>Wesele · Pałac pod Kaliszem</span></div></div>
+        <div class="slide"><span class="qm">“</span><blockquote>Profesjonalizm i wyczucie estetyki na najwyższym poziomie. Bukiet ślubny przeszedł moje najśmielsze oczekiwania — dokładnie taki, jak sobie wymarzyłam.</blockquote><div class="author">Karolina W.<span>Panna Młoda · 2024</span></div></div>
+        <div class="slide"><span class="qm">“</span><blockquote>Współpraca od początku do końca bezstresowa. Pani florystka doradziła, wysłuchała i stworzyła oprawę kościoła, przy której goście nie mogli przestać robić zdjęć.</blockquote><div class="author">Natalia &amp; Paweł<span>Ceremonia · Kalisz</span></div></div>
+        <div class="slide"><span class="qm">“</span><blockquote>Zamawialiśmy dekorację eventu firmowego — elegancko, terminowo i z klasą. Pełen profesjonalizm. Na pewno wrócimy przy kolejnej okazji.</blockquote><div class="author">Magdalena K.<span>Event firmowy</span></div></div>
+      </div></div>
+      <div class="carousel-nav">
+        <button id="prev" aria-label="Poprzednia" data-cursor>←</button>
+        <div class="dots" id="dots"></div>
+        <button id="next" aria-label="Następna" data-cursor>→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ZASIEG -->
+<section class="section" id="zasieg">
+  <div class="wrap reach">
+    <div class="reach-copy reveal">
+      <span class="eyebrow">Zasięg</span>
+      <h2 class="section-title">Działamy w Kaliszu<br>i całej Polsce</h2>
+      <p>Nasza pracownia mieści się w Kaliszu, ale realizujemy projekty w całym kraju. Dojeżdżamy w promieniu kilkuset kilometrów, by zadbać o oprawę Waszej uroczystości tam, gdzie chcecie.</p>
+      <div class="reach-stats">
+        <div><div class="n">62-800</div><div class="l">Kalisz · baza</div></div>
+        <div><div class="n"><span data-count="300" data-suffix="+ km">0</span></div><div class="l">promień dojazdu</div></div>
+        <div><div class="n">PL</div><div class="l">cała Polska</div></div>
+      </div>
+    </div>
+    <div class="map-wrap reveal" data-d="1" id="mapWrap">
+      <svg viewBox="0 0 400 340" role="img" aria-label="Mapa Polski z zaznaczonym Kaliszem">
+        <path class="map-fill" d="M70 90 L120 60 L150 70 L185 55 L210 70 L255 60 L300 80 L335 90 L355 120 L350 160 L370 195 L350 230 L320 245 L300 275 L260 290 L215 280 L180 295 L140 280 L110 255 L75 245 L55 210 L70 175 L50 145 L70 115 Z"/>
+        <path class="map-outline" d="M70 90 L120 60 L150 70 L185 55 L210 70 L255 60 L300 80 L335 90 L355 120 L350 160 L370 195 L350 230 L320 245 L300 275 L260 290 L215 280 L180 295 L140 280 L110 255 L75 245 L55 210 L70 175 L50 145 L70 115 Z"/>
+        <g class="pin">
+          <circle class="pin-ring" cx="165" cy="180" r="6"/>
+          <circle class="pin-dot" cx="165" cy="180" r="5"/>
+          <text class="map-label" x="178" y="184">Kalisz</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section class="section contact-section" id="kontakt">
+  <div class="wrap contact">
+    <div class="contact-info reveal">
+      <span class="eyebrow">Kontakt</span>
+      <h2 class="section-title">Porozmawiajmy<br>o Twoim projekcie</h2>
+      <div class="info-row">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 4h4l2 5-3 2a12 12 0 005 5l2-3 5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg></span>
+        <div><div class="k">Telefon</div><a class="v" href="tel:+48602372878" data-cursor>602 372 878</a></div>
+      </div>
+      <div class="info-row">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+        <div><div class="k">E-mail</div><a class="v" href="mailto:kontakt@whiteflowers.pl" data-cursor>kontakt@whiteflowers.pl</a></div>
+      </div>
+      <div class="info-row">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 21s7-6.3 7-11a7 7 0 10-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+        <div><div class="k">Pracownia</div><div class="v">Kalisz 62-800</div></div>
+      </div>
+      <div class="socials">
+        <a href="https://www.facebook.com/kalisz.whiteflowers/" target="_blank" rel="noopener" aria-label="Facebook" data-cursor><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0022 12z"/></svg></a>
+        <a href="https://www.instagram.com/whiteflowerskalisz/" target="_blank" rel="noopener" aria-label="Instagram" data-cursor><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+      </div>
+    </div>
+
+    <form class="form reveal" data-d="1" id="contactForm" novalidate>
+      <div class="grid2">
+        <div class="field"><label for="imie">Imię</label><input type="text" id="imie" name="imie" placeholder="Jak masz na imię?" required></div>
+        <div class="field"><label for="email">E-mail</label><input type="email" id="email" name="email" placeholder="twoj@email.pl" required></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label for="tel">Telefon</label><input type="tel" id="tel" name="tel" placeholder="+48 ..."></div>
+        <div class="field"><label for="data">Data wydarzenia</label><input type="date" id="data" name="data"></div>
+      </div>
+      <div class="field"><label for="wiadomosc">Wiadomość</label><textarea id="wiadomosc" name="wiadomosc" placeholder="Opowiedz nam o swoim projekcie..." required></textarea></div>
+      <button type="submit" class="btn btn-dark" data-cursor>Porozmawiajmy <span class="arrow">→</span></button>
+      <p class="form-note">Odpowiadamy zwykle w ciągu 24 godzin.</p>
+      <p class="form-success" id="formSuccess">Dziękujemy — odezwiemy się wkrótce. ❀</p>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-mono mono"><i class="w">W</i><span class="sl"></span><i class="f">F</i></div>
+  <div class="footer-name">White Flowers</div>
+  <div class="footer-sub">Pracownia Dekoracji Florystycznych</div>
+  <div class="footer-socials">
+    <a href="https://www.facebook.com/kalisz.whiteflowers/" target="_blank" rel="noopener" aria-label="Facebook" data-cursor><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0022 12z"/></svg></a>
+    <a href="https://www.instagram.com/whiteflowerskalisz/" target="_blank" rel="noopener" aria-label="Instagram" data-cursor><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-meta">
+    <div>© <span id="year"></span> White Flowers Kalisz · Wszelkie prawa zastrzeżone</div>
+    <div>Kalisz 62-800 · tel. 602 372 878</div>
+    <div>Made with <span class="heart">❤</span> w Kaliszu</div>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose" aria-label="Zamknij">✕</button>
+  <button class="lb-prev" id="lbPrev" aria-label="Poprzednie">←</button>
+  <img src="" alt="" id="lbImg">
+  <button class="lb-next" id="lbNext" aria-label="Następne">→</button>
+  <div class="lb-counter" id="lbCounter"></div>
+</div>
+
+<script>
+const reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* ---------- PRELOADER ---------- */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.getElementById('preloader').classList.add('done');
+    document.body.classList.remove('loading');
+  }, reduce?100:1900);
+});
+
+/* ---------- HERO TAGLINE word reveal ---------- */
+(function(){
+  const tag=document.getElementById('heroTag');
+  const words=tag.textContent.trim().split(' ');
+  tag.innerHTML='';
+  words.forEach((w,i)=>{
+    const s=document.createElement('span');
+    s.className='w';s.textContent=w+' ';
+    s.style.animationDelay=(0.9+i*0.06)+'s';
+    tag.appendChild(s);
+  });
+})();
+
+/* ---------- PETALS ---------- */
+(function(){
+  if(reduce)return;
+  const box=document.getElementById('petals');
+  const PETAL='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 6 6 10 6 14a6 6 0 0012 0c0-4-2-8-6-12z"/></svg>';
+  const N=9;
+  for(let i=0;i<N;i++){
+    const p=document.createElement('div');
+    p.className='petal';
+    const size=10+Math.random()*16;
+    p.style.width=size+'px';p.style.height=size+'px';
+    p.style.left=Math.random()*100+'%';
+    p.style.animationDuration=(11+Math.random()*12)+'s';
+    p.style.animationDelay=(-Math.random()*16)+'s';
+    p.style.opacity=(0.3+Math.random()*0.4);
+    p.innerHTML=PETAL;
+    box.appendChild(p);
+  }
+})();
+
+/* ---------- PARALLAX (hero + tagged imgs) ---------- */
+(function(){
+  if(reduce)return;
+  const bg=document.getElementById('heroBg');
+  const inner=document.getElementById('heroInner');
+  const items=[...document.querySelectorAll('[data-parallax]')];
+  let ticking=false;
+  function onScroll(){
+    if(ticking)return;ticking=true;
+    requestAnimationFrame(()=>{
+      const y=window.scrollY;
+      if(y<window.innerHeight){
+        bg.style.transform=`translateY(${y*0.25}px) scale(1.12)`;
+        inner.style.transform=`translateY(${y*0.18}px)`;
+        inner.style.opacity=Math.max(0,1-y/(window.innerHeight*0.8));
+      }
+      items.forEach(el=>{
+        const r=el.getBoundingClientRect();
+        const off=(r.top+r.height/2-window.innerHeight/2)*parseFloat(el.dataset.parallax);
+        el.style.transform=`translateY(${-off}px) scale(1.06)`;
+      });
+      ticking=false;
+    });
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+})();
+
+/* ---------- MARQUEE duplicate for seamless loop ---------- */
+(function(){const m=document.getElementById('marquee');m.innerHTML+=m.innerHTML;})();
+
+/* ---------- GALLERY ---------- */
+const IMAGES={
+  sluby:["1519225421980-715cb0215aed","1465495976277-4387d4b0b4c6","1522413452208-996ff3f3e740","1606800052052-a08af7148866","1519741497674-611481863552","1511285560929-80b456fea0bc","1464366400600-7168b8af9bc3","1535254973040-607b474cb50d"],
+  eventy:["1492684223066-81342ee5ff30","1530103862676-de8c9debad1d","1478146896981-b80fe463b330","1467810563316-b5476525c0f9","1414235077428-338989a2e8c0","1519671482749-fd09be7ccebf","1505236858219-8359eb29e329","1470229722913-7c0e2dbbafd3"],
+  wianki:["1487070183336-b863922373d4","1455659817273-f96807779a8a","1490750967868-88aa4486c946","1502977249166-824b3a8a4d6d","1508610048659-a06b669e3321","1519378058457-4c29a0a2efac","1457089328109-e5d9bd499191","1561181286-d3fee7d55364"],
+  sezonowe:["1416879595882-3373a0480b5b","1444930694458-01babf71870c","1509719662282-d3a96f76dbb1","1490750967868-88aa4486c946","1518621736915-f3b1c41bfd00","1502977249166-824b3a8a4d6d","1469259943454-aa100abba749","1486718448742-163732cd1544"]
+};
+const CAPTIONS={sluby:"Śluby",eventy:"Eventy",wianki:"Wianki",sezonowe:"Sezonowe"};
+const TITLES={
+  sluby:["Oprawa sali","Stół Pary Młodej","Bukiet Panny Młodej","Ołtarz kwiatowy","Świece i zieleń","Wejście do sali","Detal kompozycji","Wesele w plenerze"],
+  eventy:["Dekoracja eventu","Ściana kwiatowa","Kompozycja stołowa","Aranżacja sceny","Detale przyjęcia","Strefa powitalna","Centralna kompozycja","Oprawa wieczoru"],
+  wianki:["Wianek panieński","Wianek sezonowy","Kompozycja okrągła","Wianek na drzwi","Detal z zieleni","Wianek ślubny","Praca w pracowni","Wianek pastelowy"],
+  sezonowe:["Jesienna kompozycja","Letni bukiet","Wiosenne kwiaty","Kompozycja stołowa","Dekoracja sezonowa","Bukiet okolicznościowy","Polne kwiaty","Stroik świąteczny"]
+};
+const url=id=>`https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=800&q=80`;
+const gallery=document.getElementById('gallery');
+let currentCat='sluby',lbList=[];
+
+function renderGallery(cat){
+  gallery.style.opacity='0';
+  setTimeout(()=>{
+    gallery.innerHTML='';
+    lbList=IMAGES[cat].map(url);
+    IMAGES[cat].forEach((id,i)=>{
+      const t=document.createElement('div');
+      t.className='tile';t.dataset.index=i;t.setAttribute('data-cursor','');
+      t.innerHTML=`<img src="${url(id)}" alt="${TITLES[cat][i]||CAPTIONS[cat]}" loading="lazy"><div class="cap"><div class="t">${TITLES[cat][i]||''}</div><div class="s">${CAPTIONS[cat]}</div></div>`;
+      t.addEventListener('click',()=>openLightbox(i));
+      gallery.appendChild(t);
+      setTimeout(()=>t.classList.add('shown'),60*i);
+    });
+    gallery.style.opacity='1';
+    bindCursor();
+  },280);
+}
+renderGallery(currentCat);
+document.querySelectorAll('.tab').forEach(tab=>tab.addEventListener('click',()=>{
+  document.querySelector('.tab.active').classList.remove('active');
+  tab.classList.add('active');currentCat=tab.dataset.cat;renderGallery(currentCat);
+}));
+
+/* ---------- LIGHTBOX ---------- */
+const lb=document.getElementById('lightbox'),lbImg=document.getElementById('lbImg'),lbCounter=document.getElementById('lbCounter');
+let lbIndex=0;
+function openLightbox(i){lbIndex=i;updateLb();lb.classList.add('open');document.body.style.overflow='hidden';}
+function updateLb(){lbImg.src=lbList[lbIndex].replace('w=800','w=1400');lbCounter.textContent=`${lbIndex+1} / ${lbList.length}`;}
+function closeLb(){lb.classList.remove('open');document.body.style.overflow='';}
+document.getElementById('lbClose').addEventListener('click',closeLb);
+document.getElementById('lbNext').addEventListener('click',()=>{lbIndex=(lbIndex+1)%lbList.length;updateLb();});
+document.getElementById('lbPrev').addEventListener('click',()=>{lbIndex=(lbIndex-1+lbList.length)%lbList.length;updateLb();});
+lb.addEventListener('click',e=>{if(e.target===lb)closeLb();});
+document.addEventListener('keydown',e=>{
+  if(!lb.classList.contains('open'))return;
+  if(e.key==='Escape')closeLb();
+  if(e.key==='ArrowRight')document.getElementById('lbNext').click();
+  if(e.key==='ArrowLeft')document.getElementById('lbPrev').click();
+});
+
+/* ---------- NAV ---------- */
+const nav=document.getElementById('nav'),hero=document.getElementById('hero');
+new IntersectionObserver(([e])=>nav.classList.toggle('show',!e.isIntersecting),{threshold:0,rootMargin:'-80px 0px 0px 0px'}).observe(hero);
+const navToggle=document.getElementById('navToggle'),navLinks=document.getElementById('navLinks');
+navToggle.addEventListener('click',()=>{navToggle.classList.toggle('open');navLinks.classList.toggle('open');});
+navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{navToggle.classList.remove('open');navLinks.classList.remove('open');}));
+
+/* ---------- REVEAL + COUNTERS + MAP ---------- */
+const ro=new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');ro.unobserve(en.target);}});
+},{threshold:.15,rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+function animateCount(el){
+  const target=+el.dataset.count,suffix=el.dataset.suffix||'',dur=1600,start=performance.now();
+  function step(now){
+    const p=Math.min((now-start)/dur,1);
+    const eased=1-Math.pow(1-p,3);
+    el.textContent=Math.round(target*eased)+suffix;
+    if(p<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+const co=new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{if(en.isIntersecting){animateCount(en.target);co.unobserve(en.target);}});
+},{threshold:.6});
+document.querySelectorAll('[data-count]').forEach(el=>co.observe(el));
+
+const mapWrap=document.getElementById('mapWrap');
+new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{if(en.isIntersecting){en.target.classList.add('drawn');}});
+},{threshold:.3}).observe(mapWrap);
+
+/* ---------- CAROUSEL ---------- */
+const slidesEl=document.getElementById('slides'),slideNodes=[...slidesEl.children];
+const total=slideNodes.length,dotsBox=document.getElementById('dots');
+let cur=0,timer;
+for(let i=0;i<total;i++){const b=document.createElement('button');if(i===0)b.classList.add('active');b.setAttribute('data-cursor','');b.addEventListener('click',()=>go(i));dotsBox.appendChild(b);}
+function go(i){
+  cur=(i+total)%total;
+  slidesEl.style.transform=`translateX(-${cur*100}%)`;
+  slidesEl.style.transition='transform .7s var(--ease)';
+  slideNodes.forEach((s,si)=>s.classList.toggle('active',si===cur));
+  dotsBox.querySelectorAll('button').forEach((d,di)=>d.classList.toggle('active',di===cur));
+  restart();
+}
+document.getElementById('next').addEventListener('click',()=>go(cur+1));
+document.getElementById('prev').addEventListener('click',()=>go(cur-1));
+function restart(){clearInterval(timer);timer=setInterval(()=>go(cur+1),6500);}
+restart();
+
+/* ---------- PROGRESS BAR ---------- */
+const progress=document.getElementById('progress');
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  progress.style.width=(window.scrollY/h*100)+'%';
+},{passive:true});
+
+/* ---------- CUSTOM CURSOR + magnetic ---------- */
+(function(){
+  if(reduce||window.matchMedia('(hover:none)').matches)return;
+  const dot=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+  let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;
+  window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
+  (function loop(){rx+=(mx-rx)*0.18;ry+=(my-ry)*0.18;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+  window.bindCursor=function(){
+    document.querySelectorAll('[data-cursor]').forEach(el=>{
+      if(el._cb)return;el._cb=true;
+      el.addEventListener('mouseenter',()=>ring.classList.add('hot'));
+      el.addEventListener('mouseleave',()=>ring.classList.remove('hot'));
+    });
+  };
+  window.bindCursor();
+  // magnetic CTA
+  document.querySelectorAll('.btn').forEach(btn=>{
+    btn.addEventListener('mousemove',e=>{
+      const r=btn.getBoundingClientRect();
+      btn.style.transform=`translate(${(e.clientX-r.left-r.width/2)*0.18}px,${(e.clientY-r.top-r.height/2)*0.28}px)`;
+    });
+    btn.addEventListener('mouseleave',()=>btn.style.transform='');
+  });
+})();
+if(!window.bindCursor)window.bindCursor=function(){};
+
+/* ---------- FORM ---------- */
+const form=document.getElementById('contactForm');
+form.addEventListener('submit',e=>{
+  e.preventDefault();
+  if(!form.checkValidity()){form.reportValidity();return;}
+  document.getElementById('formSuccess').classList.add('show');
+  form.querySelector('button').style.display='none';
+  document.querySelector('.form-note').style.display='none';
+  form.reset();
+});
+
+document.getElementById('year').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
