@@ -60,7 +60,14 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.08;letter-spa
 .rose-mark.tr.in{transform:translateY(-50%) rotate(7deg)}
 .rose-mark.bl{top:50%;left:-4%;transform:translateY(-44%) rotate(-7deg)}
 .rose-mark.bl.in{transform:translateY(-50%) rotate(-7deg)}
-@media(max-width:680px){.rose-mark{width:clamp(240px,72vw,360px)}.rose-mark.in{opacity:.24}}
+@media(max-width:680px){
+  .rose-mark{width:clamp(180px,48vw,250px)}
+  .rose-mark.in{opacity:.12}
+  .rose-mark.tr{top:1rem;right:-2.5rem;transform:translateY(0) rotate(7deg)}
+  .rose-mark.tr.in{transform:translateY(0) rotate(7deg)}
+  .rose-mark.bl{top:auto;bottom:0;left:-2.5rem;transform:translateY(0) rotate(-7deg)}
+  .rose-mark.bl.in{transform:translateY(0) rotate(-7deg)}
+}
 .section-head{margin-bottom:clamp(2.5rem,6vw,4.5rem)}
 .section-head.center{text-align:center;display:flex;flex-direction:column;align-items:center;gap:1.4rem}
 .section-head .section-title{margin-top:1.4rem}
@@ -375,7 +382,7 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.08;letter-spa
   <img class="rose-mark tr" src="assets/rose.png" alt="" aria-hidden="true" loading="lazy" />
   <div class="wrap about">
     <div class="about-photo reveal">
-      <img src="https://images.unsplash.com/photo-1457089328109-e5d9bd499191?auto=format&fit=crop&w=900&q=80" alt="Florystka komponująca bukiet" loading="lazy" data-parallax="0.12">
+      <img src="assets/about.jpg" alt="Realizacja White Flowers — elegancja czerni i bieli" loading="lazy" data-parallax="0.12">
       <div class="badge">
         <div class="n" data-count="10" data-suffix="+">0</div>
         <div class="l">lat pasji</div>
@@ -397,15 +404,9 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.08;letter-spa
     <div class="section-head center reveal">
       <span class="eyebrow center">Portfolio</span>
       <h2 class="section-title">Realizacje</h2>
-      <p class="lede">Wybrane projekty z naszej pracowni — śluby, eventy i sezonowe kompozycje tworzone z myślą o niepowtarzalnych chwilach.</p>
+      <p class="lede">Wybrane realizacje z naszej pracowni — śluby i eventy dopracowane w każdym detalu.</p>
     </div>
-    <div class="tabs reveal" data-d="1" id="tabs">
-      <button class="tab active" data-cat="sluby" data-cursor>Śluby</button>
-      <button class="tab" data-cat="eventy" data-cursor>Eventy</button>
-      <button class="tab" data-cat="wianki" data-cursor>Wianki</button>
-      <button class="tab" data-cat="sezonowe" data-cursor>Sezonowe</button>
-    </div>
-    <div class="masonry" id="gallery"></div>
+    <div class="masonry reveal" data-d="1" id="gallery"></div>
   </div>
 </section>
 
@@ -640,51 +641,23 @@ window.addEventListener('load',()=>{
 (function(){const m=document.getElementById('marquee');m.innerHTML+=m.innerHTML;})();
 
 /* ---------- GALLERY ---------- */
-const IMAGES={
-  sluby:["1519225421980-715cb0215aed","1465495976277-4387d4b0b4c6","1522413452208-996ff3f3e740","1606800052052-a08af7148866","1519741497674-611481863552","1511285560929-80b456fea0bc","1464366400600-7168b8af9bc3","1535254973040-607b474cb50d"],
-  eventy:["1492684223066-81342ee5ff30","1530103862676-de8c9debad1d","1478146896981-b80fe463b330","1467810563316-b5476525c0f9","1414235077428-338989a2e8c0","1519671482749-fd09be7ccebf","1505236858219-8359eb29e329","1470229722913-7c0e2dbbafd3"],
-  wianki:["1487070183336-b863922373d4","1455659817273-f96807779a8a","1490750967868-88aa4486c946","1502977249166-824b3a8a4d6d","1508610048659-a06b669e3321","1519378058457-4c29a0a2efac","1457089328109-e5d9bd499191","1561181286-d3fee7d55364"],
-  sezonowe:["1416879595882-3373a0480b5b","1444930694458-01babf71870c","1509719662282-d3a96f76dbb1","1490750967868-88aa4486c946","1518621736915-f3b1c41bfd00","1502977249166-824b3a8a4d6d","1469259943454-aa100abba749","1486718448742-163732cd1544"]
-};
-const CAPTIONS={sluby:"Śluby",eventy:"Eventy",wianki:"Wianki",sezonowe:"Sezonowe"};
-const TITLES={
-  sluby:["Oprawa sali","Stół Pary Młodej","Bukiet Panny Młodej","Ołtarz kwiatowy","Świece i zieleń","Wejście do sali","Detal kompozycji","Wesele w plenerze"],
-  eventy:["Dekoracja eventu","Ściana kwiatowa","Kompozycja stołowa","Aranżacja sceny","Detale przyjęcia","Strefa powitalna","Centralna kompozycja","Oprawa wieczoru"],
-  wianki:["Wianek panieński","Wianek sezonowy","Kompozycja okrągła","Wianek na drzwi","Detal z zieleni","Wianek ślubny","Praca w pracowni","Wianek pastelowy"],
-  sezonowe:["Jesienna kompozycja","Letni bukiet","Wiosenne kwiaty","Kompozycja stołowa","Dekoracja sezonowa","Bukiet okolicznościowy","Polne kwiaty","Stroik świąteczny"]
-};
-const url=id=>`https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=800&q=80`;
+const GALLERY=Array.from({length:14},(_,i)=>`assets/gallery/g${String(i+1).padStart(2,'0')}.jpg`);
 const gallery=document.getElementById('gallery');
-let currentCat='sluby',lbList=[];
-
-function renderGallery(cat){
-  gallery.style.opacity='0';
-  setTimeout(()=>{
-    gallery.innerHTML='';
-    lbList=IMAGES[cat].map(url);
-    IMAGES[cat].forEach((id,i)=>{
-      const t=document.createElement('div');
-      t.className='tile';t.dataset.index=i;t.setAttribute('data-cursor','');
-      t.innerHTML=`<img src="${url(id)}" alt="${TITLES[cat][i]||CAPTIONS[cat]}" loading="lazy"><div class="cap"><div class="t">${TITLES[cat][i]||''}</div><div class="s">${CAPTIONS[cat]}</div></div>`;
-      t.addEventListener('click',()=>openLightbox(i));
-      gallery.appendChild(t);
-      setTimeout(()=>t.classList.add('shown'),60*i);
-    });
-    gallery.style.opacity='1';
-    bindCursor();
-  },280);
-}
-renderGallery(currentCat);
-document.querySelectorAll('.tab').forEach(tab=>tab.addEventListener('click',()=>{
-  document.querySelector('.tab.active').classList.remove('active');
-  tab.classList.add('active');currentCat=tab.dataset.cat;renderGallery(currentCat);
-}));
+let lbList=GALLERY.slice();
+GALLERY.forEach((src,i)=>{
+  const t=document.createElement('div');
+  t.className='tile';t.dataset.index=i;
+  t.innerHTML=`<img src="${src}" alt="Realizacja White Flowers Kalisz" loading="lazy"><div class="cap"><div class="s">White Flowers · Realizacja</div></div>`;
+  t.addEventListener('click',()=>openLightbox(i));
+  gallery.appendChild(t);
+  setTimeout(()=>t.classList.add('shown'),50*i);
+});
 
 /* ---------- LIGHTBOX ---------- */
 const lb=document.getElementById('lightbox'),lbImg=document.getElementById('lbImg'),lbCounter=document.getElementById('lbCounter');
 let lbIndex=0;
 function openLightbox(i){lbIndex=i;updateLb();lb.classList.add('open');document.body.style.overflow='hidden';}
-function updateLb(){lbImg.src=lbList[lbIndex].replace('w=800','w=1400');lbCounter.textContent=`${lbIndex+1} / ${lbList.length}`;}
+function updateLb(){lbImg.src=lbList[lbIndex];lbCounter.textContent=`${lbIndex+1} / ${lbList.length}`;}
 function closeLb(){lb.classList.remove('open');document.body.style.overflow='';}
 document.getElementById('lbClose').addEventListener('click',closeLb);
 document.getElementById('lbNext').addEventListener('click',()=>{lbIndex=(lbIndex+1)%lbList.length;updateLb();});
