@@ -127,7 +127,7 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.08;letter-spa
 .nav-toggle{display:none;flex-direction:column;gap:5px;padding:.4rem}
 .nav-toggle span{width:24px;height:1.5px;background:var(--charcoal);transition:.3s var(--ease)}
 @media (max-width:880px){
-  .nav-links{position:fixed;inset:0 0 0 auto;width:min(80vw,360px);background:var(--ivory);flex-direction:column;justify-content:center;gap:2rem;padding:3rem;transform:translateX(100%);transition:transform .55s var(--ease);box-shadow:var(--shadow-soft)}
+  .nav-links{position:fixed;top:0;right:0;bottom:auto;height:100vh;height:100dvh;width:min(80vw,360px);background:var(--ivory);flex-direction:column;justify-content:center;gap:2rem;padding:3rem;transform:translateX(100%);transition:transform .55s var(--ease);box-shadow:var(--shadow-soft)}
   .nav-links.open{transform:none}
   .nav-links a{font-size:1.05rem}
   .nav-toggle{display:flex;z-index:101}
@@ -308,6 +308,10 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.08;letter-spa
 .footer-divider{width:60px;height:1px;background:rgba(248,245,239,.2);margin:2rem auto}
 .footer-meta{font-size:.78rem;letter-spacing:.05em;line-height:2}
 .footer-meta .heart{color:var(--gold-soft)}
+.footer-credit{color:var(--gold-soft);position:relative;transition:color .3s var(--ease)}
+.footer-credit::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:1px;background:var(--gold-soft);transition:width .35s var(--ease)}
+.footer-credit:hover{color:var(--ivory)}
+.footer-credit:hover::after{width:100%}
 
 /* ============================================================  LIGHTBOX  */
 .lightbox{position:fixed;inset:0;z-index:200;background:rgba(20,19,17,.95);display:flex;align-items:center;justify-content:center;padding:2rem;opacity:0;visibility:hidden;transition:opacity .45s var(--ease),visibility .45s}
@@ -553,7 +557,7 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.08;letter-spa
   <div class="footer-meta">
     <div>© <span id="year"></span> White Flowers Kalisz · Wszelkie prawa zastrzeżone</div>
     <div>Kalisz 62-800 · tel. 602 372 878</div>
-    <div>Made with <span class="heart">❤</span> w Kaliszu</div>
+    <div>Made by <a href="https://partnerrozwoju.vercel.app" target="_blank" rel="noopener" class="footer-credit">Wiktor Chojnowski</a></div>
   </div>
 </footer>
 
